@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { headerImage } from "../assets/img/loading.gif";
+import headerImage from "../assets/img/loading.gif";
 
 export const Banner = () => {
   return (

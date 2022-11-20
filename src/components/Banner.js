@@ -7,18 +7,42 @@ export const Banner = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const toRotate = ["Web Development", "Web Designer", "UI/UX Designer"];
   const [text, setText] = useState("");
-  const [delta, setDelta] useState(300 - Math.random() * 100)
+  const [delta, setDelta] = useState(300 - Math.random() * 100);
   const period = 2000;
 
-  useEffect(() =>{
-    let ticker = setInterval (() => {
+  useEffect(() => {
+    let ticker = setInterval(() => {
       ticker();
+    }, delta);
 
-    }, delta)
-    return () => {clearInterval(ticker)}
+    return () => {
+      clearInterval(ticker);
+    };
+  }, [text]);
 
-  }, [text])
-  
+  const tick = () => {
+    let i = loopNum % toRotate.length;
+    let fullText = toRotate[i];
+    let updatedText = isDeleting
+      ? fullText.substring(0, text.length - 1)
+      : fullText.substring(0, text.length + 1);
+
+    setText(updatedText);
+
+    if (isDeleting) {
+      setDelta((prevDelta) => prevDelta / 2);
+    }
+
+    if (!isDeleting && updatedText === fullText) {
+      setIsDeleting(true);
+      setDelta(period);
+    } else if (isDeleting && updatedText === "") {
+      setIsDeleting(false);
+      setLoopNum(loopNum + 1);
+      setDelta(500);
+    }
+  };
+
   return (
     <section className="banner" id="home">
       <Container>
@@ -27,7 +51,7 @@ export const Banner = () => {
             <span className="Hi, I'm Jack"></span>
             <h1>
               {`Welcome to my Portfolio`} <br></br>
-              <span className="wrap">Learning all things Web Development!</span>
+              <span className="wrap">{text}</span>
             </h1>
             <p>
               Currently on the journey of learning Full Stack Web Development
